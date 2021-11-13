@@ -1,8 +1,9 @@
 import {useEffect, useRef} from "react";
 
 const updateCanvasSize = (canvas, context) => {
-    const {width, height} = canvas.getBoundingClientRect();
-
+    //const {width, height} = canvas.getBoundingClientRect();
+    const width = window.innerWidth;
+    const height = window.innerHeight;
     if (canvas.width !== width || canvas.height !== height) {
         const {devicePixelRatio: ratio = 1} = window;
         canvas.width = width * ratio;
