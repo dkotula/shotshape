@@ -36,6 +36,7 @@
     ]
   },
   "devDependencies": {
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "socket.io-client": "^4.3.2"
   }
 }
