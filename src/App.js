@@ -7,12 +7,7 @@ function App() {
     let x = 100, y = 100;
     let positions = [];
     let isMouseDown = false;
-    let isKeyDown = {
-        a: false,
-        d: false,
-        w: false,
-        s: false
-    }
+    let isKeyDown = {a: false, d: false, w: false, s: false}
 
     const socket = io('http://localhost:3001', {transports: ['websocket']});
 
@@ -40,7 +35,7 @@ function App() {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
         ctx.beginPath();
-        ctx.fillStyle = "#b4f5b0";
+        ctx.fillStyle = "#e0f6df";
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
         for (let player in positions) {
@@ -52,8 +47,8 @@ function App() {
                 ctx.fillStyle = positions[player].color;
                 ctx.beginPath();
                 ctx.arc(
-                    positions[player].controls.x,
-                    positions[player].controls.y,
+                    positions[player].position.x,
+                    positions[player].position.y,
                     radius,
                     0,
                     2 * Math.PI
