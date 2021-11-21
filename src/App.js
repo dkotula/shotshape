@@ -5,16 +5,27 @@ import io from "socket.io-client";
 
 function App() {
     let x = 100, y = 100;
+    let positions = [];
 
     const socket = io('http://localhost:3001', {transports: ['websocket']});
 
     useEffect(() => {
         let interval = setInterval(() => {
-            socket.emit('position', {x: x});
-        }, 1000);
+            socket.emit('position', {x: x, y: y});
+        }, 20);
 
         socket.on('position', function (data) {
-            console.log(data);
+            let isInArray = false;
+            for (let player in positions) {
+                if (positions.hasOwnProperty(player) && positions[player].id === data.id) {
+                    positions[player].positions = data.positions;
+                    isInArray = true;
+                    break;
+                }
+            }
+            if (!isInArray) {
+                positions.push(data)
+            }
         });
 
         socket.on('disconnect', function () {
@@ -33,16 +44,20 @@ function App() {
         ctx.fillStyle = "#b4f5b0";
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-        ctx.fillStyle = "#0000FF";
-        ctx.beginPath();
-        ctx.arc(
-            x,
-            y,
-            20,
-            0,
-            2 * Math.PI
-        );
-        ctx.fill();
+        for (let player in positions) {
+            if (positions.hasOwnProperty(player)) {
+                ctx.fillStyle = positions[player].color;
+                ctx.beginPath();
+                ctx.arc(
+                    positions[player].positions.x,
+                    positions[player].positions.y,
+                    20,
+                    0,
+                    2 * Math.PI
+                );
+            }
+            ctx.fill();
+        }
     };
 
     const mouseMove = (e) => {
