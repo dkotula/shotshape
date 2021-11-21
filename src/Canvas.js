@@ -5,7 +5,8 @@ import useCanvas from "./useCanvas";
 const Canvas = props => {
     const {draw, options, ...rest} = props;
     const canvasRef = useCanvas(draw, options);
-    return <canvas ref={canvasRef} onMouseMove={rest.mouseMove} onClick={rest.mouseClick}/>;
+    return <canvas ref={canvasRef} onMouseMove={rest.mouseMove} onMouseDown={rest.mouseDown} onMouseUp={rest.mouseUp}
+                   onKeyUp={rest.keyUp} onKeyDown={rest.keyDown} tabIndex="0"/>;
 };
 
 Canvas.defaultProps = {
