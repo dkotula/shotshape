@@ -5,7 +5,8 @@ import io from "socket.io-client";
 
 function App() {
     let x = 100, y = 100;
-    let positions = [];
+    let players = [];
+    let mapElements = [];
     let isMouseDown = false;
     let isKeyDown = {a: false, d: false, w: false, s: false}
 
@@ -15,11 +16,20 @@ function App() {
         socket.emit('client');
 
         let interval = setInterval(() => {
-            socket.emit('position', {x: x, y: y, isMouseDown: isMouseDown, isKeyDown: isKeyDown});
+            const object = {
+                x: x,
+                y: y,
+                isMouseDown: isMouseDown,
+                isKeyDown: isKeyDown
+            }
+            socket.emit('position', object);
         }, 20);
 
         socket.on('position', function (data) {
-            positions = data;
+            if (data.hasOwnProperty("players") && data.hasOwnProperty("mapElements")) {
+                players = data.players;
+                mapElements = data.mapElements;
+            }
         });
 
         socket.on('disconnect', function () {
@@ -33,28 +43,41 @@ function App() {
         //     // y = 100 + Math.random() * 500;
         // }
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
         ctx.beginPath();
         ctx.fillStyle = "#e0f6df";
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-        for (let player in positions) {
-            if (positions.hasOwnProperty(player)) {
-                let radius = 20;
-                if (positions[player].controls.isMouseDown) {
-                    radius = 40;
-                }
-                ctx.fillStyle = positions[player].color;
+        for (let player in players) {
+            if (players.hasOwnProperty(player)) {
+                ctx.fillStyle = players[player].color;
                 ctx.beginPath();
                 ctx.arc(
-                    positions[player].position.x,
-                    positions[player].position.y,
-                    radius,
+                    players[player].position.x,
+                    players[player].position.y,
+                    20,
                     0,
                     2 * Math.PI
                 );
             }
             ctx.fill();
+        }
+        if (mapElements.hasOwnProperty("bullets")) {
+            for (let bullet in mapElements.bullets) {
+                if (mapElements.bullets.hasOwnProperty(bullet)) {
+                    ctx.fillStyle = mapElements.bullets[bullet].color;
+                    ctx.globalAlpha = mapElements.bullets[bullet].lifeTime / 100
+                    ctx.beginPath();
+                    ctx.arc(
+                        mapElements.bullets[bullet].position.x,
+                        mapElements.bullets[bullet].position.y,
+                        10,
+                        0,
+                        2 * Math.PI
+                    );
+                }
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
         }
     };
 
