@@ -6,9 +6,10 @@ import io from "socket.io-client";
 function App() {
     let x = 100, y = 100;
     let players = [];
-    let mapElements = [];
+    let bullets = [];
     let isMouseDown = false;
-    let isKeyDown = {a: false, d: false, w: false, s: false}
+    let isKeyDown = {a: false, d: false, w: false, s: false};
+    let autofire = false;
 
     const socket = io('http://localhost:3001', {transports: ['websocket']});
 
@@ -20,15 +21,16 @@ function App() {
                 x: x,
                 y: y,
                 isMouseDown: isMouseDown,
-                isKeyDown: isKeyDown
+                isKeyDown: isKeyDown,
+                autofire: autofire,
             }
             socket.emit('position', object);
         }, 20);
 
         socket.on('position', function (data) {
-            if (data.hasOwnProperty("players") && data.hasOwnProperty("mapElements")) {
+            if (data.hasOwnProperty("players") && data.hasOwnProperty("bullets")) {
                 players = data.players;
-                mapElements = data.mapElements;
+                bullets = data.bullets;
             }
         });
 
@@ -61,23 +63,21 @@ function App() {
             }
             ctx.fill();
         }
-        if (mapElements.hasOwnProperty("bullets")) {
-            for (let bullet in mapElements.bullets) {
-                if (mapElements.bullets.hasOwnProperty(bullet)) {
-                    ctx.fillStyle = mapElements.bullets[bullet].color;
-                    ctx.globalAlpha = mapElements.bullets[bullet].lifeTime / 100
-                    ctx.beginPath();
-                    ctx.arc(
-                        mapElements.bullets[bullet].position.x,
-                        mapElements.bullets[bullet].position.y,
-                        10,
-                        0,
-                        2 * Math.PI
-                    );
-                }
-                ctx.fill();
-                ctx.globalAlpha = 1;
+        for (let bullet in bullets) {
+            if (bullets.hasOwnProperty(bullet)) {
+                ctx.fillStyle = bullets[bullet].color;
+                ctx.globalAlpha = bullets[bullet].lifeTime / 100
+                ctx.beginPath();
+                ctx.arc(
+                    bullets[bullet].position.x,
+                    bullets[bullet].position.y,
+                    10,
+                    0,
+                    2 * Math.PI
+                );
             }
+            ctx.fill();
+            ctx.globalAlpha = 1;
         }
     };
 
@@ -103,6 +103,8 @@ function App() {
     const keyUp = (e) => {
         if (isKeyDown.hasOwnProperty(e.key)) {
             isKeyDown[e.key] = false;
+        } else if (e.key === 'e') {
+            autofire = !autofire;
         }
     }
 
