@@ -82,6 +82,13 @@ function App() {
                     let y = players[player].position.y;
                     let rotation = players[player].rotation;
 
+                    ctx.beginPath();
+                    ctx.strokeStyle = players[player].color;
+                    ctx.rect(x - 50, y - 50, 100, 10);
+                    ctx.stroke();
+                    ctx.fillRect(x - 50, y - 50, players[player].hp, 10);
+                    ctx.closePath();
+
                     ctx.translate(x, y);
                     ctx.rotate(Math.PI * rotation / 360);
                     ctx.translate(-x, -y);
