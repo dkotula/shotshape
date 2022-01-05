@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import Canvas from './Canvas'
 import io from "socket.io-client";
+const sqrt_2 = Math.sqrt(2);
 
 
 function App() {
@@ -62,6 +63,30 @@ function App() {
                 );
             }
             ctx.fill();
+
+            if (players.hasOwnProperty(player)) {
+                let size = 49;
+                let x = players[player].position.x;
+                let y = players[player].position.y;
+                let rotation = players[player].rotation;
+
+                ctx.translate(x, y);
+                ctx.rotate(Math.PI * rotation / 360);
+                ctx.translate(-x, -y);
+
+                ctx.beginPath();
+                ctx.moveTo(x, y - size / 2);
+                ctx.lineTo(x - size / 2, y);
+                ctx.lineTo(x, y + size / 2);
+                ctx.lineTo(x + size / 2, y);
+                ctx.closePath();
+                ctx.fill();
+                ctx.fillRect(x - size / 4 * sqrt_2, y - size / 4 * sqrt_2, size / 2 * sqrt_2, size / 2 * sqrt_2);
+
+                ctx.translate(x, y);
+                ctx.rotate(-Math.PI * rotation / 360);
+                ctx.translate(-x, -y);
+            }
         }
         for (let bullet in bullets) {
             if (bullets.hasOwnProperty(bullet)) {
