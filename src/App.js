@@ -63,7 +63,7 @@ function App() {
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
         for (let player in players) {
-            if (players.hasOwnProperty(player)) {
+            if (players[player].hp > 0) {
                 ctx.fillStyle = players[player].color;
                 ctx.beginPath();
                 ctx.arc(
@@ -76,28 +76,28 @@ function App() {
             }
             ctx.fill();
 
-            if (players.hasOwnProperty(player)) {
-                let size = 49;
-                let x = players[player].position.x;
-                let y = players[player].position.y;
-                let rotation = players[player].rotation;
+                if (players[player].hp > 0) {
+                    let size = 49;
+                    let x = players[player].position.x;
+                    let y = players[player].position.y;
+                    let rotation = players[player].rotation;
 
-                ctx.translate(x, y);
-                ctx.rotate(Math.PI * rotation / 360);
-                ctx.translate(-x, -y);
+                    ctx.translate(x, y);
+                    ctx.rotate(Math.PI * rotation / 360);
+                    ctx.translate(-x, -y);
 
-                ctx.beginPath();
-                ctx.moveTo(x, y - size / 2);
-                ctx.lineTo(x - size / 2, y);
-                ctx.lineTo(x, y + size / 2);
-                ctx.lineTo(x + size / 2, y);
-                ctx.closePath();
-                ctx.fill();
-                ctx.fillRect(x - size / 4 * sqrt_2, y - size / 4 * sqrt_2, size / 2 * sqrt_2, size / 2 * sqrt_2);
+                    ctx.beginPath();
+                    ctx.moveTo(x, y - size / 2);
+                    ctx.lineTo(x - size / 2, y);
+                    ctx.lineTo(x, y + size / 2);
+                    ctx.lineTo(x + size / 2, y);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.fillRect(x - size / 4 * sqrt_2, y - size / 4 * sqrt_2, size / 2 * sqrt_2, size / 2 * sqrt_2);
 
-                ctx.translate(x, y);
-                ctx.rotate(-Math.PI * rotation / 360);
-                ctx.translate(-x, -y);
+                    ctx.translate(x, y);
+                    ctx.rotate(-Math.PI * rotation / 360);
+                    ctx.translate(-x, -y);
             }
         }
         for (let bullet in bullets) {
@@ -154,7 +154,7 @@ function App() {
                         img.src = Speed_x3_plus;
                         break;
                 }
-                ctx.drawImage(img, bonuses[bonus].position.x, bonuses[bonus].position.y, 40, 40);
+                ctx.drawImage(img, bonuses[bonus].position.x - 25, bonuses[bonus].position.y - 25);
             }
         }
     };
