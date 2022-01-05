@@ -1,13 +1,24 @@
 import React, {useEffect} from 'react'
 import Canvas from './Canvas'
 import io from "socket.io-client";
+import Bullet_minus from './Bonusy/Bullet_minus.png';
+import Bullet_plus from './Bonusy/Bullet_plus.png';
+import Bullet_strength_minus from './Bonusy/Bullet_strength_minus.png';
+import Bullet_strength_plus from './Bonusy/Bullet_strength_plus.png';
+import life_full from './Bonusy/life_full.png';
+import life_full_now from './Bonusy/life_full_now.png';
+import life_minus from './Bonusy/life_minus.png';
+import Speed_x2_minus from './Bonusy/Speed_x2_minus.png';
+import Speed_x2_plus from './Bonusy/Speed_x2_plus.png';
+import Speed_x3_minus from './Bonusy/Speed_x3_minus.png';
+import Speed_x3_plus from './Bonusy/Speed_x3_plus.png';
 const sqrt_2 = Math.sqrt(2);
-
 
 function App() {
     let x = 100, y = 100;
     let players = [];
     let bullets = [];
+    let bonuses = [];
     let isMouseDown = false;
     let isKeyDown = {a: false, d: false, w: false, s: false};
     let autofire = false;
@@ -29,9 +40,10 @@ function App() {
         }, 20);
 
         socket.on('position', function (data) {
-            if (data.hasOwnProperty("players") && data.hasOwnProperty("bullets")) {
+            if (data.hasOwnProperty("players") && data.hasOwnProperty("bullets") && data.hasOwnProperty("bonuses")) {
                 players = data.players;
                 bullets = data.bullets;
+                bonuses = data.bonuses;
             }
         });
 
@@ -103,6 +115,47 @@ function App() {
             }
             ctx.fill();
             ctx.globalAlpha = 1;
+        }
+        for (let bonus in bonuses) {
+            if (bonuses.hasOwnProperty(bonus)) {
+                let img = new Image();
+                switch (bonuses[bonus].src) {
+                    case "Bullet_minus":
+                        img.src = Bullet_minus;
+                        break;
+                    case "Bullet_plus":
+                        img.src = Bullet_plus;
+                        break;
+                    case "Bullet_strength_minus":
+                        img.src = Bullet_strength_minus;
+                        break;
+                    case "Bullet_strength_plus":
+                        img.src = Bullet_strength_plus;
+                        break;
+                    case "life_full":
+                        img.src = life_full;
+                        break;
+                    case "life_full_now":
+                        img.src = life_full_now;
+                        break;
+                    case "life_minus":
+                        img.src = life_minus;
+                        break;
+                    case "Speed_x2_minus":
+                        img.src = Speed_x2_minus;
+                        break;
+                    case "Speed_x2_plus":
+                        img.src = Speed_x2_plus;
+                        break;
+                    case "Speed_x3_minus":
+                        img.src = Speed_x3_minus;
+                        break;
+                    case "Speed_x3_plus":
+                        img.src = Speed_x3_plus;
+                        break;
+                }
+                ctx.drawImage(img, bonuses[bonus].position.x, bonuses[bonus].position.y, 40, 40);
+            }
         }
     };
 
