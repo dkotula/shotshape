@@ -73,8 +73,11 @@ function App() {
                     0,
                     2 * Math.PI
                 );
+                ctx.fill();
+                ctx.textAlign = "center";
+                ctx.font = "20px Arial";
+                ctx.fillText(players[player].points, players[player].position.x, players[player].position.y + 50);
             }
-            ctx.fill();
 
                 if (players[player].hp > 0) {
                     let size = 49;
