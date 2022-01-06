@@ -26,7 +26,7 @@ function App() {
     const socket = io('http://localhost:3001', {transports: ['websocket']});
 
     useEffect(() => {
-        socket.emit('client', "name");
+        socket.emit('client');
 
         let interval = setInterval(() => {
             const object = {
@@ -112,9 +112,9 @@ function App() {
                     ctx.textAlign = "center";
                     ctx.font = "20px Arial";
                     ctx.strokeStyle = "white";
-                    ctx.strokeText(players[player].points, players[player].position.x, players[player].position.y + 5);
+                    ctx.strokeText(players[player].points, players[player].position.x, players[player].position.y + 7);
                     ctx.fillStyle = "black";
-                    ctx.fillText(players[player].points, players[player].position.x, players[player].position.y + 5);
+                    ctx.fillText(players[player].points, players[player].position.x, players[player].position.y + 7);
             }
         }
         for (let bullet in bullets) {
@@ -203,9 +203,17 @@ function App() {
         }
     }
 
+    const changeName = () => {
+        socket.emit('start', document.querySelector("#name").value);
+    }
+
+    socket.on('start', function () {
+        document.querySelector("#messageContainer").style.display = "none";
+    });
+
     return (
         <Canvas draw={draw} width={window.innerWidth} height={window.innerHeight} mouseMove={mouseMove}
-                mouseUp={mouseUp} mouseDown={mouseDown} keyDown={keyDown} keyUp={keyUp}/>
+                mouseUp={mouseUp} mouseDown={mouseDown} keyDown={keyDown} keyUp={keyUp} changeName={changeName}/>
     );
 }
 
