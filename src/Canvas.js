@@ -8,9 +8,21 @@ const Canvas = props => {
     return <div>
         <canvas ref={canvasRef} onMouseMove={rest.mouseMove} onMouseDown={rest.mouseDown} onMouseUp={rest.mouseUp}
                    onKeyUp={rest.keyUp} onKeyDown={rest.keyDown} tabIndex="0"/>
+        <div id="rank">
+            <p className="rankp"/>
+            <p className="rankp"/>
+            <p className="rankp"/>
+            <p className="rankp"/>
+            <p className="rankp"/>
+            <p className="rankp"/>
+            <p className="rankp"/>
+            <p className="rankp"/>
+            <p className="rankp"/>
+            <p className="rankp"/>
+        </div>
         <div id="messageContainer">
             <div id="message">
-                <h1>Wpisz nazwę postaci</h1>
+                <h1 id="header">Wpisz nazwę postaci</h1>
                 <input type="text" id="name" name="name"/>
                 <div id="start" onClick={rest.changeName}>Graj</div>
             </div>

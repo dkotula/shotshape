@@ -44,6 +44,23 @@ function App() {
                 players = data.players;
                 bullets = data.bullets;
                 bonuses = data.bonuses;
+                let rank = [];
+                for(let i = 0; i < players.length; i++) {
+                    if (players[i].isAlive) {
+                        rank.push(players[i]);
+                    }
+                }
+                rank = rank.sort(function(el1, el2) {
+                    return el2.points - el1.points;
+                });
+                for (let i = 0; i < rank.length && i < 10; i++) {
+                    document.querySelectorAll(".rankp")[i].innerHTML = i + 1 + ". " + rank[i].points + " - " + rank[i].name;
+                    document.querySelectorAll(".rankp")[i].style.padding = "10px"
+                }
+                for (let i = rank.length; i < 10; i++) {
+                    document.querySelectorAll(".rankp")[i].innerHTML = "";
+                    document.querySelectorAll(".rankp")[i].style.padding = "0px"
+                }
             }
         });
 
@@ -209,6 +226,12 @@ function App() {
 
     socket.on('start', function () {
         document.querySelector("#messageContainer").style.display = "none";
+        document.querySelector("#name").style.display = "none";
+    });
+
+    socket.on('dead', function (points) {
+        document.querySelector("#header").innerHTML = "Uzyskałeś " + points + " punktów!";
+        document.querySelector("#messageContainer").style.display = "flex";
     });
 
     return (

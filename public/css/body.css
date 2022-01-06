@@ -25,7 +25,7 @@ body {
     background-color: lightgreen;
 }
 
-h1 {
+#header{
     color: green;
 }
 
@@ -50,4 +50,19 @@ h1 {
 
 #start:hover {
     background-color: rgb(185, 239, 185);
+}
+
+#rank {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 5px lightgreen solid;
+    color: green;
+}
+
+.rankp {
+    width: 200px;
+    margin: 0;
 }
