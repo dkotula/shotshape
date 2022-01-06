@@ -26,7 +26,7 @@ function App() {
     const socket = io('http://localhost:3001', {transports: ['websocket']});
 
     useEffect(() => {
-        socket.emit('client');
+        socket.emit('client', "name");
 
         let interval = setInterval(() => {
             const object = {
@@ -76,7 +76,7 @@ function App() {
                 ctx.fill();
                 ctx.textAlign = "center";
                 ctx.font = "20px Arial";
-                ctx.fillText(players[player].points, players[player].position.x, players[player].position.y + 50);
+                ctx.fillText(players[player].name, players[player].position.x, players[player].position.y + 40);
             }
 
                 if (players[player].hp > 0) {
@@ -108,6 +108,13 @@ function App() {
                     ctx.translate(x, y);
                     ctx.rotate(-Math.PI * rotation / 360);
                     ctx.translate(-x, -y);
+
+                    ctx.textAlign = "center";
+                    ctx.font = "20px Arial";
+                    ctx.strokeStyle = "white";
+                    ctx.strokeText(players[player].points, players[player].position.x, players[player].position.y + 5);
+                    ctx.fillStyle = "black";
+                    ctx.fillText(players[player].points, players[player].position.x, players[player].position.y + 5);
             }
         }
         for (let bullet in bullets) {
